@@ -51,6 +51,10 @@ If a rare is chosen, a random rare card valued within the min-max range of the p
 
 Once the specific rare is chosen, a randomizer chooses a value within 15% of the base value.
 
+Upon purchasing packs, the packs will be placed in a queue and opened one after the other from highest cost to lowest or vice versa depending on the player's choice. This will be the primary demonstration of data structures/algorithm concepts for this project.
+
+All 2000 unique cards, card packs, rarities, odds, and the explanation of the calculated odds are available in the card catalog PDF.
+
 
 
 
