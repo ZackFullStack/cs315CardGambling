@@ -116,6 +116,7 @@ def setProbs ():
         ]
 def openPackShop (userDeposit):
     packsAmount = 0
+    purchasedPacks = []
     
     while userDeposit >= packs[0]["Cost"]:
         print(f"\nCurrent Balance: ${userDeposit:.2f}")
@@ -129,7 +130,7 @@ def openPackShop (userDeposit):
         print("[6] Heap Sort Pack      - $500.00   ($90 - $10,000)")
         print("[7] King Sort Pack      - $1,000.00 ($250 - $50,000)")
         print("[8] God Sort Pack       - $2,500.00 ($850 - $100,000)")
-        print("[q] Done buying / Exit shop")
+        print("[q] Exit shop / Quit Run")
         print("-------------------------------------------")
         
         choice = input("Enter your choice (1-8): ")
@@ -164,8 +165,15 @@ def startRun ():
 def openCollection ():
 
 def historyMenu ():
+    print(f"Username: {user["username"]}\n")
+    print(f"Current Balance: ${user["balance"],.2f}\n")
+    print(f"Best Run: ${user["best_run"],.2f}\n")
+    print(f"Best Card: {user["best_card"]}\n"")
 
-def setNewHighScore ():
+def setNewHighScore (userScore):
+    if (userScore > user["best_run"]):
+        user["best_run"] = userScore
+        
 
 def userPackChoice (cardsArr):
     for i in range(1, len(cardsArr):
@@ -191,7 +199,14 @@ def userPackChoice (cardsArr):
 
 
 
-
+def openCollection():
+    print("Your Current Collection:\n") 
+    userSortChoice = input("Press h to sort cards from highest to lowest value, press l to sort from lowest to highest:\n")
+    
+    if userSortChoice == "h" or "H":
+        #Sorted Array High to low
+    elif userSortChoice == "l" or "L"
+    
 
 def selectionMenu (userSelection):
     if userSelection.lower == "s":
