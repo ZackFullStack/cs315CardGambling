@@ -30,56 +30,67 @@ def printMenu () :
     print("Press 'h' to view your run history and stats\n")
 
 def setProbs ():
-    packs = [
+  packs = [
         {
             "PackName": "Bubble Sort",
             "Cost": 1.00,
             "CardValueRange": (0.25, 30.00),
-            "PotentialRarities": ["Common", "Uncommon", "Rare", "Super Rare"]
+            "PotentialRarities": ["Common", "Uncommon", "Rare", "Super Rare"],
+            "cardIndexRange": (1, 250)
         },
         {
             "PackName": "Selection Sort",
             "Cost": 5.00,
             "CardValueRange": (1.50, 75.00),
-            "PotentialRarities": ["Common", "Uncommon", "Rare", "Super Rare", "Mega Rare"]
+            "PotentialRarities": ["Common", "Uncommon", "Rare", "Super Rare", "Mega Rare"],
+            "cardIndexRange": (251, 500)
         },
         {
             "PackName": "Insertion Sort",
             "Cost": 25.00,
             "CardValueRange": (10.00, 600.00),
-            "PotentialRarities": ["Uncommon", "Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical"]
+            "PotentialRarities": ["Uncommon", "Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical"],
+            "cardIndexRange": (501, 750)
         },
         {
             "PackName": "Quick Sort",
             "Cost": 50.00,
             "CardValueRange": (20.00, 1500.00),
-            "PotentialRarities": ["Uncommon", "Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical"]
+            "PotentialRarities": ["Uncommon", "Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical"],
+            "cardIndexRange": (751, 1000)
         },
         {
             "PackName": "Merge Sort",
             "Cost": 100.00,
             "CardValueRange": (40.00, 4000.00),
-            "PotentialRarities": ["Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine"]
+            "PotentialRarities": ["Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine"],
+            "cardIndexRange": (1001, 1250)
         },
         {
             "PackName": "Heap Sort",
             "Cost": 500.00,
             "CardValueRange": (90.00, 10000.00),
-            "PotentialRarities": ["Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine"]
+            "PotentialRarities": ["Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine"],
+            "cardIndexRange": (1251, 1500)
         },
         {
             "PackName": "King Sort",
             "Cost": 1000.00,
             "CardValueRange": (250.00, 50000.00),
-            "PotentialRarities": ["Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine", "Transcendent"]
+            "PotentialRarities": ["Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine", "Transcendent"],
+            "cardIndexRange": (1501, 1750)
         },
         {
             "PackName": "God Sort",
             "Cost": 2500.00,
             "CardValueRange": (850.00, 100000.00),
-            "PotentialRarities": ["Mega Rare", "Legendary", "Mythical", "Divine", "Transcendent"]
+            "PotentialRarities": ["Mega Rare", "Legendary", "Mythical", "Divine", "Transcendent"],
+            "cardIndexRange": (1751, 2000)
         }
-    ]
+    ] 
+    
+    for pack in packs:
+        
     
         
         
