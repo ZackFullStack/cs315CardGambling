@@ -91,11 +91,16 @@ packs = [
 
 
 def printMenu():
-    print("Welcome to Data Structure Dash!\n")
-    print("---------------------------------\n")
-    print("Press 's' to start a run")
-    print("Press 'c' to view your collection")
-    print("Press 'h' to view your run history and stats\n")
+    print("\n" + "=" * 50)
+    print("        WELCOME TO DATA STRUCTURE DASH")
+    print("=" * 50)
+    print(f"  Player: {user['username']} | Balance: ${user['balance']:,.2f}")
+    print("-" * 50)
+    print("  [s] Start a New Run")
+    print("  [c] View Card Collection")
+    print("  [h] View Run History & High Scores")
+    print("  [q] Quit Game")
+    print("=" * 50)
 
 
 def setProbs(pack_name=""):
@@ -179,10 +184,27 @@ def startRun():
 
 
 def historyMenu():
-    print(f"Username: {user['username']}\n")
-    print(f"Current Balance: ${user['balance']:,.2f}\n")
-    print(f"Best Run: ${user['best_run']:,.2f}\n")
-    print(f"Best Card: {user['best_card']}\n")
+    print("\n" + "=" * 50)
+    print("        --- PLAYER STATS & RUN HISTORY ---")
+    print("=" * 50)
+    print(f"  Username:        {user['username']}")
+    print(f"  Current Balance: ${user['balance']:,.2f}")
+    print(f"  Best Run Profit: ${user['best_run']:,.2f}")
+    
+    # Cleanly display Best Card instead of raw dictionary
+    best_card_display = user["best_card"].get("display", "None")
+    print(f"  Best Card:       {best_card_display}")
+    print("-" * 50)
+
+    print("\n  Past Runs Log:")
+    if not user["run_history"]:
+        print("  No completed runs yet.")
+    else:
+        for idx, run in enumerate(user["run_history"], 1):
+            print(f"  Run #{idx:02d} | Deposit: ${run['deposit']:,.2f} | Earned: ${run['earned']:,.2f} | Net: ${run['net']:,.2f}")
+            
+    print("=" * 50)
+    input("\nPress Enter to return to main menu...")
 
 
 def setNewHighScore(userScore):
@@ -219,21 +241,31 @@ def userPackChoice(cardsArr):
 
 
 def openCollection():
-    print("Your Current Collection:\n") 
-    userSortChoice = input("Press h to sort cards from highest to lowest value, press l to sort from lowest to highest:\n")
+    print("\n" + "=" * 50)
+    print("           --- YOUR CARD COLLECTION ---")
+    print("=" * 50)
     
-    if userSortChoice in ("h", "H"):
-        # Sorted Array High to low
-        pass
-    elif userSortChoice in ("l", "L"):
-        # Sorted Array low to High
-        pass
-    else:
-        print("Invalid entry, press h or l:\n")
-        
-    for card in user["collection"]:
-        print(f"{card['display']}\n")
-        print("\n")
+    if not user["collection"]:
+        print("\n  Your collection is currently empty!")
+        print("  Start a run ('s') and keep cards to build your collection.\n")
+        print("=" * 50)
+        input("\nPress Enter to return to main menu...")
+        return
+
+    print(f"\n  Total Cards Owned: {len(user['collection'])}")
+    userSortChoice = input("  Sort by value ([h or 2] High-to-Low | [l or 1] Low-to-High | Enter to skip): ").strip().lower()
+    
+    if userSortChoice in ("h", "2"):
+        user["collection"].sort(key=lambda x: x["value"], reverse=True)
+    elif userSortChoice in ("l", "1"):
+        user["collection"].sort(key=lambda x: x["value"])
+
+    print("\n" + "-" * 50)
+    for idx, card in enumerate(user["collection"], 1):
+        print(f"  {idx:02d}. {card['display']}")
+    print("-" * 50 + "\n")
+    
+    input("Press Enter to return to main menu...")
 
 
 def selectionMenu(userSelection):
