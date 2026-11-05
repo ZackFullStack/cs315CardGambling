@@ -5,6 +5,7 @@
 #Resources:
 
 import random
+import re
 from collections import deque 
 
 user = {
@@ -28,55 +29,63 @@ packs = [
         "CardValueRange": (0.25, 30.00),
         "PotentialRarities": ["Common", "Uncommon", "Rare", "Super Rare"],
         "cardIndexRange": (1, 250)
+        "Odds": {"Common": 0.965225, "Uncommon": 0.033567, "Rare": 0.001167, "Super Rare": 0.000041}
     },
     {
         "PackName": "Selection Sort",
         "Cost": 5.00,
         "CardValueRange": (1.50, 75.00),
         "PotentialRarities": ["Common", "Uncommon", "Rare", "Super Rare", "Mega Rare"],
-        "cardIndexRange": (251, 500)
+        "cardIndexRange": (251, 500),
+        "Odds": {"Common": 0.843986, "Uncommon": 0.131740, "Rare": 0.020564, "Super Rare": 0.003210, "Mega Rare": 0.000501}
     },
     {
         "PackName": "Insertion Sort",
         "Cost": 25.00,
         "CardValueRange": (10.00, 600.00),
         "PotentialRarities": ["Uncommon", "Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical"],
-        "cardIndexRange": (501, 750)
+        "cardIndexRange": (501, 750),
+        "Odds": {"Uncommon": 0.950236, "Rare": 0.047288, "Super Rare": 0.002353, "Mega Rare": 0.000117, "Legendary": 0.000006, "Mythical": 0.0000003}
     },
     {
         "PackName": "Quick Sort",
         "Cost": 50.00,
         "CardValueRange": (20.00, 1500.00),
         "PotentialRarities": ["Uncommon", "Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical"],
-        "cardIndexRange": (751, 1000)
+        "cardIndexRange": (751, 1000),
+        "Odds": {"Uncommon": 0.797951, "Rare": 0.161268, "Super Rare": 0.032593, "Mega Rare": 0.006587, "Legendary": 0.001331, "Mythical": 0.000269}
     },
     {
         "PackName": "Merge Sort",
         "Cost": 100.00,
         "CardValueRange": (40.00, 4000.00),
         "PotentialRarities": ["Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine"],
-        "cardIndexRange": (1001, 1250)
+        "cardIndexRange": (1001, 1250),
+        "Odds": {"Rare": 0.910210, "Super Rare": 0.081728, "Mega Rare": 0.007338, "Legendary": 0.000659, "Mythical": 0.000059, "Divine": 0.000005}
     },
     {
         "PackName": "Heap Sort",
         "Cost": 500.00,
         "CardValueRange": (90.00, 10000.00),
         "PotentialRarities": ["Rare", "Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine"],
-        "cardIndexRange": (1251, 1500)
+        "cardIndexRange": (1251, 1500),
+        "Odds": {"Rare": 0.593986, "Super Rare": 0.242813, "Mega Rare": 0.099259, "Legendary": 0.040576, "Mythical": 0.016587, "Divine": 0.006780}
     },
     {
         "PackName": "King Sort",
         "Cost": 1000.00,
         "CardValueRange": (250.00, 50000.00),
         "PotentialRarities": ["Super Rare", "Mega Rare", "Legendary", "Mythical", "Divine", "Transcendent"],
-        "cardIndexRange": (1501, 1750)
+        "cardIndexRange": (1501, 1750),
+       "Odds": {"Super Rare": 0.720668, "Mega Rare": 0.201554, "Legendary": 0.056370, "Mythical": 0.015765, "Divine": 0.004409, "Transcendent": 0.001233}
     },
     {
         "PackName": "God Sort",
         "Cost": 2500.00,
         "CardValueRange": (850.00, 100000.00),
         "PotentialRarities": ["Mega Rare", "Legendary", "Mythical", "Divine", "Transcendent"],
-        "cardIndexRange": (1751, 2000)
+        "cardIndexRange": (1751, 2000),
+        "Odds": {"Mega Rare": 0.769806, "Legendary": 0.177592, "Mythical": 0.040970, "Divine": 0.009452, "Transcendent": 0.002180}
     }
 ]
 
@@ -134,15 +143,39 @@ def openPackShop(userDeposit):
             
     return purchasedPacks, userDeposit
 
-
 def startRun():
-    userDeposit = int(input("Run Started! Enter the amount you would like to deposit (the amount must end with a 0 or 5):\n"))
-    if userDeposit > 0 and userDeposit % 5 == 0:
-        user["balance"] += userDeposit
-        print(f"Excellent! You will start this run with ${userDeposit}. It is time to purchase your packs:\n")
-        openPackShop(userDeposit)
+    try:
+        userDeposit = float(input("\nRun Started! Enter deposit amount (must end in 0 or 5, up to $5000): $"))
+    except ValueError:
+        print("Invalid number entry.")
+        return
+        
+    if userDeposit > 0 and userDeposit <= 5000 and userDeposit % 5 == 0:
+        print(f"Starting run with ${userDeposit:,.2f} deposit!")
+        
+        purchasedPacks, remainingDeposit = openPackShop(userDeposit)
+        
+        if not purchasedPacks:
+            print("No packs purchased. Exiting run.")
+            return
+
+        print("\nChoose how you want to open your packs:")
+        print("[1] Highest Cost to Lowest Cost")
+        print("[2] Lowest Cost to Highest Cost")
+        sort_choice = input("Select (1 or 2): ").strip()
+        
+        if sort_choice == "1":
+            purchasedPacks.sort(key=lambda x: x["Cost"], reverse=True)
+        else:
+            purchasedPacks.sort(key=lambda x: x["Cost"])
+            
+        pack_queue = deque(purchasedPacks)
+        
+        print(f"\n{len(pack_queue)} pack(s) loaded into the opening queue!")
+        runOpeningPhase(pack_queue, userDeposit)
     else:
-        print("Error, please enter a whole number amount ending in 5 or 0:\n")
+        print("Error: Deposit must be a positive amount ending in 0 or 5 (up to $5000).\n")
+        return None, 0
 
 
 def historyMenu():
@@ -199,7 +232,7 @@ def openCollection():
         print("Invalid entry, press h or l:\n")
         
     for card in user["collection"]:
-        print(f"{card}\n")
+        print(f"{card['display']}\n")
         print("\n")
 
 
@@ -215,24 +248,105 @@ def selectionMenu(userSelection):
 def readCards(filename="cards.txt"):
     catalog = []
     
-    with open('cards.pdf', 'r') as file:
+    with open(filename, 'r') as file:
         for line in file:
             line = line.strip()
             if not line:
                 continue
             
             card_id_str, bracket_data = line.split(" ", 1)
+            parts = bracket_data.strip("[]").split("][")
             
+            if len(parts) == 4:
+                rarity, card_type, name, value_str = parts
+                base_value = float(value_str.replace("$", "").replace(",", ""))
+
+                catalog.append({
+                    "id": int(card_id_str),
+                    "rarity": rarity,
+                    "type": card_type,
+                    "name": name,
+                    "base_value": base_value,
+                    "value": base_value  # Will be updated when rolled in a pack
+                })
+    return catalog
+CARD_CATALOG = readCards()
+
+def generateCardFromPack(pack):
+    rarities = list(pack["Odds"].keys())
+    probs = list(pack["Odds"].values())
+    chosen_rarity = random.choices(rarities, weights=probs, k=1)[0]
+    
+    matching_cards = [c for c in CARD_CATALOG if c["rarity"] == chosen_rarity]
+    if not matching_cards:
+        matching_cards = CARD_CATALOG
+        
+    base_card = random.choice(matching_cards)
+    
+    base_cents = int(round(base_card["base_value"] * 100))
+    min_cents = int(round(0.85 * base_cents))
+    max_cents = int(round(1.15 * base_cents))
+    final_cents = random.randint(min_cents, max_cents)
+    final_val = final_cents / 100.0
+    
+    return {
+        "id": base_card["id"],
+        "rarity": base_card["rarity"],
+        "type": base_card["type"],
+        "name": base_card["name"],
+        "value": final_val,
+        "display": f"#{base_card['id']} [{base_card['rarity']}][{base_card['type']}][{base_card['name']}][${final_val:.2f}]"
+    }
+def runOpeningPhase(pack_queue, userDeposit):
+    run_earned = 0.0
+    print("\n--- OPENING PACKS ---")
+    
+    # Process queue until empty (FIFO)
+    while pack_queue:
+        current_pack = pack_queue.popleft()  # Deque FIFO pop
+        
+        # Determine 1, 2, or 3 card yield (Page 43 rules: 95%, 4.5%, 0.5%)
+        cards_count = random.choices(DRAW_COUNT_WEIGHTS, weights=DRAW_COUNT_PROBS, k=1)[0]
+        
+        print(f"\nOpening [{current_pack['PackName']} Pack] (Yielded {cards_count} card(s)):")
+        for _ in range(cards_count):
+            card = generateCardFromPack(current_pack)
+            print(f"PULLED: {card['display']}")
             
-            rarity, card_type, name, value_str = bracket_data.strip("[]").split("][")
-            base_value = float(value_str.replace("$", "").replace(",", ""))
+            # Check and update best card overall
+            setBestCard(card)
             
-            card = {
-                "id": int(card_id_str),
-                "rarity": rarity,
-                "type": card_type,
-                "name": name,
-                "base_value": base_value,
-                "value": base_value  # Will be updated when rolled in a pack
-            }
-            catalog.append(card)
+            action = input("Press [k] to keep in collection or [s] to sell for cash: ").strip().lower()
+            if action == "k":
+                user["collection"].append(card)
+                print("Added to collection!")
+            else:
+                user["balance"] += card["value"]
+                run_earned += card["value"]
+                print(f"Sold card for ${card['value']:,.2f}!")
+
+    # End of Run Calculations
+    net_profit = run_earned - userDeposit
+    user["run_history"].append({"deposit": userDeposit, "earned": run_earned, "net": net_profit})
+    setNewHighScore(net_profit)
+    
+    print(f"\nRun Finished! Total Deposit: ${userDeposit:,.2f} | Net Profit: ${net_profit:,.2f}")
+
+def main():
+    user["username"] = input("Enter your username: ").strip()
+    
+    while True:
+        printMenu()
+        choice = input("Enter selection (s/c/h or q to quit): ").strip().lower()
+        
+        if choice == "q":
+            print("\nThanks for playing Data Structure Dash!")
+            break
+        elif choice in ("s", "c", "h"):
+            selectionMenu(choice)
+        else:
+            print("Invalid selection. Please enter s, c, h, or q.\n")
+
+if __name__ == "__main__":
+    main()
+
