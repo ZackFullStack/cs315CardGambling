@@ -93,7 +93,7 @@ packs = [
 def printMenu():
     print("Welcome to Data Structure Dash!\n")
     print("---------------------------------\n")
-    print("Press 's' to start a run\n")
+    print("Press 's' to start a run")
     print("Press 'c' to view your collection")
     print("Press 'h' to view your run history and stats\n")
 
@@ -300,12 +300,10 @@ def generateCardFromPack(pack):
 def runOpeningPhase(pack_queue, userDeposit):
     run_earned = 0.0
     print("\n--- OPENING PACKS ---")
-    
-    # Process queue until empty (FIFO)
+
     while pack_queue:
         current_pack = pack_queue.popleft()  # Deque FIFO pop
         
-        # Determine 1, 2, or 3 card yield (Page 43 rules: 95%, 4.5%, 0.5%)
         cards_count = random.choices(DRAW_COUNT_WEIGHTS, weights=DRAW_COUNT_PROBS, k=1)[0]
         
         print(f"\nOpening [{current_pack['PackName']} Pack] (Yielded {cards_count} card(s)):")
@@ -313,7 +311,6 @@ def runOpeningPhase(pack_queue, userDeposit):
             card = generateCardFromPack(current_pack)
             print(f"PULLED: {card['display']}")
             
-            # Check and update best card overall
             setBestCard(card)
             
             action = input("Press [k] to keep in collection or [s] to sell for cash: ").strip().lower()
@@ -325,7 +322,6 @@ def runOpeningPhase(pack_queue, userDeposit):
                 run_earned += card["value"]
                 print(f"Sold card for ${card['value']:,.2f}!")
 
-    # End of Run Calculations
     net_profit = run_earned - userDeposit
     user["run_history"].append({"deposit": userDeposit, "earned": run_earned, "net": net_profit})
     setNewHighScore(net_profit)
