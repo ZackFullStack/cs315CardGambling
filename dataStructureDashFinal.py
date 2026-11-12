@@ -9,7 +9,7 @@
               Google. (2026). Gemini (Nov version) [Large language model]. 
                         https://gemini.google.com
 
-#Big O for whole code is O(n)?
+#Big O for whole code is O(n log n) because that is the worst case throughout the code.
 
 import random
 import re
