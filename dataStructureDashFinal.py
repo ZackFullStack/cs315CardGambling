@@ -357,7 +357,7 @@ def runOpeningPhase(pack_queue, userDeposit):
         cards_count = random.choices(DRAW_COUNT_WEIGHTS, weights=DRAW_COUNT_PROBS, k=1)[0]
         
         print(f"\nOpening [{current_pack['PackName']} Pack] (Yielded {cards_count} card(s)):")
-        for _ in range(cards_count):
+        for i in range(cards_count):
             card = generateCardFromPack(current_pack)
             print(f"PULLED: {card['display']}")
             
