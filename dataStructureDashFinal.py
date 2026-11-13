@@ -9,8 +9,9 @@
               Google. (2026). Gemini (Nov version) [Large language model]. 
                         https://gemini.google.com
 
-#Big O for whole code is O(n log n) because that is the worst case throughout the code.
+#Big O for whole code is O(n log n) because that is the worst case throughout the code. (Via lambda)
 
+#library imports
 import random
 import re
 from collections import deque 
@@ -406,7 +407,7 @@ def openCollection():
 
     print(f"\n  Total Cards Owned: {len(user['collection'])}")
     
-    # Prompt for optional in-place sorting
+    # Prompt for optional in-place sorting of collection from highest value to lowest or vice versa
     while True:
         userSortChoice = input("Sort by value ([h or 2] High-to-Low | [l or 1] Low-to-High | Enter to skip): ").strip().lower()
         
