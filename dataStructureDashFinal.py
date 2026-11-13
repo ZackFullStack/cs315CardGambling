@@ -17,7 +17,7 @@ import re
 from collections import deque 
 
 # 1. GLOBAL STATE & SYSTEM CONFIGURATIONS
-# Master state Hash Map (dict) providing O(1) read/write tracking for player data
+# Hash Map (dict) providing O(1) read/write tracking for player data
 user = {
     "username": "",
     "balance": 0.00,
